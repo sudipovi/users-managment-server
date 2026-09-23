@@ -4,12 +4,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("User is Active");
 });
 
-const user = [
+const users = [
   { username: "Shudip", email: "shudip@gmail.com", id: 1 },
   { username: "Pramila", email: "pramila@gmail.com", id: 2 },
   { username: "Rishi", email: "rishi@gmail.com", id: 3 },
@@ -17,11 +18,15 @@ const user = [
 ];
 
 app.get("/users", (req, res) => {
-  res.send(user);
+  res.send(users);
 });
 
 app.post("/users", (req, res) => {
-  console.log("New User Added");
+  console.log("New User Added", req.body);
+  const newUser = req.body;
+  newUser.id = users.length + 1;
+  users.push(newUser);
+  res.send(newUser);
 });
 
 app.listen(port, () => {
